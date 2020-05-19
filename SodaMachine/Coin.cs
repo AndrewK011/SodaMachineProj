@@ -15,6 +15,10 @@ namespace SodaMachine
             {
                 return value;
             }
+            set
+            {
+                this.value = value;
+            }
         }
 
         public string name;

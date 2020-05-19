@@ -16,6 +16,11 @@ namespace SodaMachine
             {
                 return cost;
             }
+
+            set
+            {
+                cost = value;
+            }
         }
 
         public string name;
