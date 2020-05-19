@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace SodaMachine
 {
-    class RootBeer
+    class RootBeer : Can
     {
+        public RootBeer()
+        {
+            name = "root beer";
+        }
     }
 }

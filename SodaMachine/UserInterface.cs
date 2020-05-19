@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SodaMachine
 {
-    class UserInterface
+    static class UserInterface
     {
     }
 }
