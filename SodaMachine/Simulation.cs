@@ -8,7 +8,16 @@ namespace SodaMachine
 {
     class Simulation
     {
-        public SodaMachine sodaMachine = new SodaMachine();
-        public Customer customer = new Customer();
+        public SodaMachine sodaMachine;
+        public Customer customer;
+
+        public Simulation()
+        {
+            sodaMachine = new SodaMachine();
+            sodaMachine.StartingInventory(10,10,10);
+            sodaMachine.StartingRegister(20,10,20,50);
+            customer = new Customer();
+
+        }
     }
 }
