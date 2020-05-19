@@ -8,6 +8,7 @@ namespace SodaMachine
 {
     class Cola : Can
     {
+        
         public Cola()
         {
             name = "cola";

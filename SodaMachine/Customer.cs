@@ -16,5 +16,18 @@ namespace SodaMachine
             wallet = new Wallet();
             backpack = new Backpack();
         }
+
+        
+
+        public void EnterPayment(Card card)
+        {
+
+        }
+
+        public void EnterPayment(List<Coin> coins)
+        {
+            UserInterface.ChooseCoins(coins);
+        }
+        
     }
 }

@@ -8,6 +8,7 @@ namespace SodaMachine
 {
     class Quarter : Coin
     {
+        
         public Quarter()
         {
             name = "quarter";
