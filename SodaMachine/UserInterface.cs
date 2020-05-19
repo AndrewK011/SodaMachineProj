@@ -90,22 +90,27 @@ namespace SodaMachine
             int dimeCounter = 0;
             int nickelCounter = 0;
             int pennyCounter = 0;
-            foreach (Quarter quarter in coins)
+            for (int i = 0; i < coins.Count; i++)
             {
-                quarterCounter++;
+                switch (coins[i].name)
+                {
+                    case "quarter":
+                        quarterCounter++;
+                        break;
+                    case "dime":
+                        dimeCounter++;
+                        break;
+                    case "nickel":
+                        nickelCounter++;
+                        break;
+                    case "penny":
+                        pennyCounter++;
+                        break;
+                    default:
+                        break;
+                }
             }
-            foreach (Dime dime in coins)
-            {
-                dimeCounter++;
-            }
-            foreach (Nickel nickel in coins)
-            {
-                nickelCounter++;
-            }
-            foreach (Penny penny in coins)
-            {
-                pennyCounter++;
-            }
+            
 
             Console.WriteLine($"You have:\n{quarterCounter} quarters\n{dimeCounter} dimes\n{nickelCounter} nickels\n{pennyCounter} pennies");
 
