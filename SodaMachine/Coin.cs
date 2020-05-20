@@ -8,7 +8,7 @@ namespace SodaMachine
 {
     abstract class Coin
     {
-        private double value;
+        protected double value;
         public double Value
         {
             get

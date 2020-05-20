@@ -41,42 +41,91 @@ namespace SodaMachine
 
         public static void CoinPrompt(string currentCoin, List<Coin> coins)
         {
+            List<Coin> insertedCoins = new List<Coin>();
             DisplayCoinWallet(coins);
             Console.WriteLine($"How many {currentCoin} would you like to insert?");
             int coinsEntered;
+            int counter = 0;
             switch (currentCoin)
             {
-                case "quarters":
+                case "quarters":               
                     coinsEntered = GetIntInput();
-                    for (int i = 0; i < coinsEntered; i++)
+                    for(int i = 0; i < coins.Count; i++)
                     {
-                        Quarter quarter = new Quarter();
-                        coins.Add(quarter);
+                        if (coins[i].name == "quarter")
+                        {
+                            Quarter quarter = new Quarter();
+                            insertedCoins.Add(quarter);
+                            coins.RemoveAt(i);
+                            counter++;
+                            i = -1;
+                        }
+
+                        if (counter == (coinsEntered))
+                        {
+                            break;
+                        }
                     }
+                    Console.WriteLine($"You insert {counter} {currentCoin}.");
                     break;
                 case "dimes":
                     coinsEntered = GetIntInput();
-                    for (int i = 0; i < coinsEntered; i++)
+                    for (int i = 0; i < coins.Count; i++)
                     {
-                        Dime dime = new Dime();
-                        coins.Add(dime);
+                        if (coins[i].name == "dime")
+                        {
+                            Dime dime = new Dime();
+                            insertedCoins.Add(dime);
+                            coins.RemoveAt(i);
+                            counter++;
+                            i = -1;
+                        }
+
+                        if (counter == coinsEntered)
+                        {
+                            break;
+                        }
                     }
                     break;
                 case "nickels":
                     coinsEntered = GetIntInput();
-                    for (int i = 0; i < coinsEntered; i++)
+                    for (int i = 0; i < coins.Count; i++)
                     {
-                        Nickel nickel = new Nickel();
-                        coins.Add(nickel);
+                        if (coins[i].name == "nickel")
+                        {
+                            Nickel nickel = new Nickel();
+                            insertedCoins.Add(nickel);
+                            coins.RemoveAt(i);
+                            counter++;
+                            i--;
+                        }
+
+                        if (counter == coinsEntered)
+                        {
+                            break;
+                        }
                     }
+                    Console.WriteLine($"You insert {counter} {currentCoin}.");
                     break;
                 case "pennies":
                     coinsEntered = GetIntInput();
-                    for (int i = 0; i < coinsEntered; i++)
+                    for (int i = 0; i < coins.Count; i++)
                     {
-                        Penny penny = new Penny();
-                        coins.Add(penny);
+                        if (coins[i].name == "penny")
+                        {
+                            Penny penny = new Penny();
+                            insertedCoins.Add(penny);
+                            coins.RemoveAt(i);
+                            counter++;
+                            i--;
+                        }
+
+                        if (counter == coinsEntered)
+                        {
+                            break;
+                        }
                     }
+                    Console.WriteLine($"You insert {counter} {currentCoin}.");
                     break;
                 default:
                     break;
@@ -90,6 +139,8 @@ namespace SodaMachine
             int dimeCounter = 0;
             int nickelCounter = 0;
             int pennyCounter = 0;
+
+
             for (int i = 0; i < coins.Count; i++)
             {
                 switch (coins[i].name)
