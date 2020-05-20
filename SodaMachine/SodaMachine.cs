@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace SodaMachine
     {
         public List<Coin> register;
         public List<Can> inventory;
+        public Can chosenCan;
+        public bool enoughChangeInRegister = true;
 
         public SodaMachine()
         {
@@ -61,132 +64,215 @@ namespace SodaMachine
             }
         }
 
-        public List<Coin> GiveChangeBack(List<Coin> coins)
+        public double DrinkSelection(List<Coin> insertedCoins)
         {
-            return coins;
+            
+            chosenCan = UserInterface.SelectDrink(inventory);
+           return CanPriceMinusCoinsInserted(chosenCan, insertedCoins);
+
         }
 
-        public List<Coin> MakeChange(List<Coin> coinsInRegister, double coinsMinusCost)
+        public double CanPriceMinusCoinsInserted(Can chosenCan, List<Coin> insertedCoins)
+        {
+            double coinTotal = 0.0;
+            foreach (Coin coin in insertedCoins)
+            {
+                coinTotal += coin.Value;
+            }
+            double result = coinTotal - chosenCan.Cost;
+            return Math.Round(result,2);
+        }
+
+
+
+        public void DispenseCan(double result, List<Can> userBackpack, List<Coin> insertedCoins)
+        {
+           // if (result == 0)
+           // {
+                userBackpack.Add(chosenCan);
+                if (inventory.Remove(chosenCan) == false)
+                {
+                    UserInterface.InventoryShortage();
+                }
+
+            //}
+            //else
+            //{
+            //    userBackpack.Add(chosenCan);
+            //    if (inventory.Remove(chosenCan) == false)
+            //    {
+            //        UserInterface.InventoryShortage();
+            //    }
+            //}
+
+
+        }
+
+        //public List<Coin> GiveUserMoneyBack(List<Coin> coins)
+        //{
+        //    return coins;
+        //}
+
+        public bool MakeChange(double coinsMinusCost, List<Coin> userWallet, List<Coin> insertedCoins)
         {
             List<Coin> coinsToGiveBack = new List<Coin>();
+            List<Coin> copyOfRegister = register;
 
-            while (coinsMinusCost != 0)
+            foreach(Coin coin in insertedCoins)
             {
-                if (coinsMinusCost / 0.25 != 0)
+                register.Add(coin);
+            }
+
+            while (coinsMinusCost != 0 && enoughChangeInRegister == true)
+            {
+                if (coinsMinusCost >= 0.25)
                 {
-                    coinsMinusCost = MakeQuarterChange(coinsToGiveBack, coinsMinusCost, coinsInRegister);
+                    coinsMinusCost = MakeQuarterChange(coinsToGiveBack, coinsMinusCost);
                 }
 
-                else if (coinsMinusCost / 0.1 != 0)
+                else if (coinsMinusCost >= 0.1)
                 {
-                    coinsMinusCost = MakeDimeChange(coinsToGiveBack, coinsMinusCost, coinsInRegister);
+                    coinsMinusCost = MakeDimeChange(coinsToGiveBack, coinsMinusCost);
                 }
 
-                else if (coinsMinusCost / 0.05 != 0)
+                else if (coinsMinusCost >= 0.05)
                 {
-                    coinsMinusCost = MakeNickelChange(coinsToGiveBack, coinsMinusCost, coinsInRegister);
+                    coinsMinusCost = MakeNickelChange(coinsToGiveBack, coinsMinusCost);
                 }
 
                 else
                 {
-                    coinsMinusCost = MakePennyChange(coinsToGiveBack, coinsMinusCost, coinsInRegister);
+                    coinsMinusCost = MakePennyChange(coinsToGiveBack, coinsMinusCost);
                 }
+ 
+                coinsMinusCost = Math.Round(coinsMinusCost,2);
 
             }
+
+            if(enoughChangeInRegister)
+            {
+               foreach(Coin coin in coinsToGiveBack)
+                {
+                    userWallet.Add(coin);   
+                    
+                }
+                return true;
+
+            }
+
+            else
+            {
+                register = copyOfRegister;
+                return false;
+            }
+
+
             
 
 
-            return coinsToGiveBack;
         }
 
-        public double MakeQuarterChange(List<Coin> coinsToGiveBack, double coinsMinusCost, List<Coin> coinsInRegister)
+        public double MakeQuarterChange(List<Coin> coinsToGiveBack, double coinsMinusCost)
         {
             int divisibleByQuarter = (int)(coinsMinusCost / 0.25);
             double changeRemaining = coinsMinusCost % 0.25;
             int counter = 0;
 
-            for (int i = 0; i < coinsInRegister.Count; i++)
+            for (int i = 0; i < register.Count; i++)
             {
-                if (coinsInRegister[i].name == "quarter")
-                {
-                    coinsToGiveBack.Add(coinsInRegister[i]);
-                    coinsInRegister.RemoveAt(i);
-                    counter++;
-                }
-
                 if (counter == divisibleByQuarter)
                 {
                     break;
                 }
 
+                if (register[i].name == "quarter")
+                {
+                    coinsToGiveBack.Add(register[i]);
+                    register.RemoveAt(i);
+                    counter++;
+                    i--;
+                }
+
             }
             return changeRemaining;
         }
 
-        public double MakeDimeChange(List<Coin> coinsToGiveBack, double coinsMinusCost, List<Coin> coinsInRegister)
+        public double MakeDimeChange(List<Coin> coinsToGiveBack, double coinsMinusCost)
         {
             int divisibleByDime = (int)(coinsMinusCost / 0.1);
             double changeRemaining = coinsMinusCost % 0.1;
             int counter = 0;
 
-            for (int i = 0; i < coinsInRegister.Count; i++)
+            for (int i = 0; i < register.Count; i++)
             {
-                if (coinsInRegister[i].name == "dime")
-                {
-                    coinsToGiveBack.Add(coinsInRegister[i]);
-                    coinsInRegister.RemoveAt(i);
-                    counter++;
-                }
-
                 if (counter == divisibleByDime)
                 {
                     break;
                 }
+                if (register[i].name == "dime")
+                {
+                    coinsToGiveBack.Add(register[i]);
+                    register.RemoveAt(i);
+                    counter++;
+                    i--;
+                }
+
 
             }
             return changeRemaining;
         }
 
-        public double MakeNickelChange(List<Coin> coinsToGiveBack, double coinsMinusCost, List<Coin> coinsInRegister)
+        public double MakeNickelChange(List<Coin> coinsToGiveBack, double coinsMinusCost)
         {
             int divisibleByNickel = (int)(coinsMinusCost / 0.05);
             double changeRemaining = coinsMinusCost % 0.05;
             int counter = 0;
 
-            for (int i = 0; i < coinsInRegister.Count; i++)
+            for (int i = 0; i < register.Count; i++)
             {
-                if (coinsInRegister[i].name == "nickel")
-                {
-                    coinsToGiveBack.Add(coinsInRegister[i]);
-                    coinsInRegister.RemoveAt(i);
-                    counter++;
-                }
-
                 if (counter == divisibleByNickel)
                 {
                     break;
                 }
+                if (register[i].name == "nickel")
+                {
+                    coinsToGiveBack.Add(register[i]);
+                    register.RemoveAt(i);
+                    counter++;
+                    i--;
+                }
+
 
             }
             return changeRemaining;
         }
 
-        public double MakePennyChange(List<Coin> coinsToGiveBack, double coinsMinusCost, List<Coin> coinsInRegister)
+        public double MakePennyChange(List<Coin> coinsToGiveBack, double coinsMinusCost)
         {
             int divisibleByPenny = (int)(coinsMinusCost / 0.01);
             double changeRemaining = coinsMinusCost % 0.01;
             int counter = 0;
 
-            for (int i = 0; i < coinsInRegister.Count; i++)
+            for (int i = 0; i < register.Count; i++)
             {
-                if (coinsInRegister[i].name == "penny")
+                if (counter == divisibleByPenny)
                 {
-                    coinsToGiveBack.Add(coinsInRegister[i]);
-                    coinsInRegister.RemoveAt(i);
+                    break;
+                }
+                if (register[i].name == "penny")
+                {
+                    coinsToGiveBack.Add(register[i]);
+                    register.RemoveAt(i);
                     counter++;
+                    i--;
                 }
 
-                if (counter == divisibleByPenny)
+                else if(i == register.Count - 1)
+                {
+                    enoughChangeInRegister = false;
+                }
+
+                else
                 {
                     break;
                 }

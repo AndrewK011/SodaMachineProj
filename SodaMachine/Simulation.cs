@@ -10,6 +10,7 @@ namespace SodaMachine
     {
         public SodaMachine sodaMachine;
         public Customer customer;
+        public List<Coin> insertedCoins;
 
         public Simulation()
         {
@@ -24,14 +25,37 @@ namespace SodaMachine
 
         public void Menu()
         {
-            if(UserInterface.ChoosePayment() == 1)
+            UserInterface.DisplayIntro();
+            UserInterface.DisplayDrinkSelections(sodaMachine.inventory);
+
+            if (UserInterface.ChoosePayment() == 1)
             {
-                customer.EnterPayment(customer.wallet.coins);
+                insertedCoins = customer.EnterPayment(customer.wallet.coins);
+                double canPriceMinusInsertedCoins = sodaMachine.DrinkSelection(insertedCoins);
+                if(canPriceMinusInsertedCoins < 0)
+                {
+                    UserInterface.NotEnoughMoney();
+                    CustomerTakesChange(insertedCoins);
+                    Menu();
+                }
+
+                else if (sodaMachine.MakeChange(canPriceMinusInsertedCoins, customer.wallet.coins, insertedCoins))
+                {
+                    sodaMachine.DispenseCan(canPriceMinusInsertedCoins, customer.backpack.cans, insertedCoins);
+                    Menu();
+                }
+                else
+                {
+                    
+
+                }
             }
+            
 
             else if(UserInterface.ChoosePayment() == 2)
             {
                 customer.EnterPayment(customer.wallet.card);
+                //DrinkSelection();
             }
 
             else
@@ -40,5 +64,19 @@ namespace SodaMachine
             }
 
         }
+
+        public void CustomerTakesChange(double change, List<Can> cans, List<Coin> coins)
+        {
+
+        }
+
+        public void CustomerTakesChange(List<Coin> insertedChange)
+        {
+            foreach(Coin coin in insertedChange)
+            {
+                customer.wallet.coins.Add(coin);
+            }
+        }
+
     }
 }

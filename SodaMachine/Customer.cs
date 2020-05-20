@@ -24,9 +24,15 @@ namespace SodaMachine
 
         }
 
-        public void EnterPayment(List<Coin> coins)
+        public List<Coin> EnterPayment(List<Coin> coins)
         {
-            UserInterface.ChooseCoins(coins);
+            List<Coin> coinPayment = UserInterface.ChooseCoins(coins);
+            return coinPayment;
+        }
+
+        public void ChooseSelection(List<Coin> coinPayment)
+        {
+
         }
         
     }
