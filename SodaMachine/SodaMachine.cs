@@ -66,10 +66,8 @@ namespace SodaMachine
 
         public double DrinkSelection(List<Coin> insertedCoins)
         {
-            
             chosenCan = UserInterface.SelectDrink(inventory);
-           return CanPriceMinusCoinsInserted(chosenCan, insertedCoins);
-
+            return CanPriceMinusCoinsInserted(chosenCan, insertedCoins);
         }
 
         public double CanPriceMinusCoinsInserted(Can chosenCan, List<Coin> insertedCoins)
@@ -85,36 +83,19 @@ namespace SodaMachine
 
 
 
-        public void DispenseCan(double result, List<Can> userBackpack, List<Coin> insertedCoins)
+        public void DispenseCan(List<Can> userBackpack)
         {
-           // if (result == 0)
-           // {
-                if (inventory.Remove(chosenCan) == false)
-                {
-                    UserInterface.InventoryShortage();
-                }
+
+            if (inventory.Remove(chosenCan) == false)
+            {
+                UserInterface.InventoryShortage();
+            }
             else
             {
                 userBackpack.Add(chosenCan);
 
             }
-            //}
-            //else
-            //{
-            //    userBackpack.Add(chosenCan);
-            //    if (inventory.Remove(chosenCan) == false)
-            //    {
-            //        UserInterface.InventoryShortage();
-            //    }
-            //}
-
-
         }
-
-        //public List<Coin> GiveUserMoneyBack(List<Coin> coins)
-        //{
-        //    return coins;
-        //}
 
         public bool MakeChange(double coinsMinusCost, List<Coin> userWallet, List<Coin> insertedCoins)
         {

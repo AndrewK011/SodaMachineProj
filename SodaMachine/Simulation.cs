@@ -16,8 +16,8 @@ namespace SodaMachine
         {
             sodaMachine = new SodaMachine();
             customer = new Customer();
-            sodaMachine.StartingInventory(10,10,10);
-            sodaMachine.StartingRegister(20,10,20,50);
+           // sodaMachine.StartingInventory(10,10,10);
+            //sodaMachine.StartingRegister(20,10,20,50);
             customer.wallet.StartingWallet(12,15,8,10);
             Menu();
             foreach(Can can in customer.backpack.cans)
@@ -40,45 +40,47 @@ namespace SodaMachine
         public void Menu()
         {
             UserInterface.DisplayIntro();
-            UserInterface.DisplayDrinkSelections(sodaMachine.inventory);
-
-            if (UserInterface.ChoosePayment() == 1)
+            if (sodaMachine.inventory.Count == 0)
             {
-                insertedCoins = customer.EnterPayment(customer.wallet.coins);
-                double canPriceMinusInsertedCoins = sodaMachine.DrinkSelection(insertedCoins);
-                if(canPriceMinusInsertedCoins < 0)
-                {
-                    UserInterface.NotEnoughMoney();
-                    CustomerTakesChange(insertedCoins);
-                    Menu();
-                }
-
-                else if(sodaMachine.MakeChange(canPriceMinusInsertedCoins, customer.wallet.coins, insertedCoins))
-                {
-                    sodaMachine.DispenseCan(canPriceMinusInsertedCoins, customer.backpack.cans, insertedCoins);
-                    Menu();
-                }
-
+                UserInterface.ExitMessage();
             }
-            
-
-            else if(UserInterface.ChoosePayment() == 2)
-            {
-                customer.EnterPayment(customer.wallet.card);
-                //DrinkSelection();
-            }
-
             else
             {
-                Menu();
+                UserInterface.DisplayDrinkSelections(sodaMachine.inventory);
+                int userInput = UserInterface.ChoosePayment();
+                if (userInput == 1)
+                {
+                    insertedCoins = customer.EnterPayment(customer.wallet.coins);
+
+
+                    double canPriceMinusInsertedCoins = sodaMachine.DrinkSelection(insertedCoins);
+                    if (canPriceMinusInsertedCoins < 0)
+                    {
+                        UserInterface.NotEnoughMoney();
+                        CustomerTakesChange(insertedCoins);
+                        Menu();
+                    }
+
+                    else if (sodaMachine.MakeChange(canPriceMinusInsertedCoins, customer.wallet.coins, insertedCoins))
+                    {
+                        sodaMachine.DispenseCan(customer.backpack.cans);
+                        Menu();
+                    }
+
+                }
+
+
+                else if (userInput == 2)
+                {
+                    customer.EnterPayment(customer.wallet.card);
+
+                }
+
             }
-
+        }         
         }
 
-        public void CustomerTakesChange(double change, List<Can> cans, List<Coin> coins)
-        {
-
-        }
+        
 
         public void CustomerTakesChange(List<Coin> insertedChange)
         {

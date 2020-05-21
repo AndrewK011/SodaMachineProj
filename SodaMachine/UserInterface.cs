@@ -11,7 +11,7 @@ namespace SodaMachine
         public static int ChoosePayment()
         {
             int userInput;
-            Console.WriteLine("Enter method of payment: \n1) coins\n2) card");
+            Console.WriteLine("Enter method of payment: \n1) Coin\n2) Card\n3) Exit");
             userInput = GetIntInput();
 
             switch (userInput)
@@ -20,10 +20,17 @@ namespace SodaMachine
                     return 1;
                 case 2:
                     return 2;
+                case 3:
+                    return 3;
                 default:
                     Console.WriteLine("Invalid Input.");
                     return ChoosePayment();  
             }        
+        }
+
+        public static void ExitMessage()
+        {
+            Console.WriteLine("Have a good day!");
         }
 
         public static void NotEnoughMoney()
@@ -116,7 +123,7 @@ namespace SodaMachine
             
             for (int i = 0; i < selectionOfCans.Count; i++)
             {
-                Console.WriteLine($"{selectionOfCans[i].name} ${selectionOfCans[i].Cost}");
+                Console.WriteLine($"{i}){selectionOfCans[i].name} ${selectionOfCans[i].Cost}");
             }
 
             Console.WriteLine("\n\n");
@@ -146,6 +153,7 @@ namespace SodaMachine
                 }
             }        
             Console.WriteLine("Please select your drink:");
+           
             for (int i = 0; i < selectionOfCans.Count; i++)
             {
                 Console.WriteLine($"{i}) {selectionOfCans[i].name} ${selectionOfCans[i].Cost}");
