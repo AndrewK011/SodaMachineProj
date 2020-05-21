@@ -20,6 +20,20 @@ namespace SodaMachine
             sodaMachine.StartingRegister(20,10,20,50);
             customer.wallet.StartingWallet(12,15,8,10);
             Menu();
+            foreach(Can can in customer.backpack.cans)
+            {
+                Console.WriteLine(can.name);
+            }
+
+            foreach(Coin coin in sodaMachine.register)
+            {
+                Console.WriteLine(coin.name);
+            }
+
+            foreach(Can can in sodaMachine.inventory)
+            {
+                Console.WriteLine(can.name);
+            }
 
         }
 
@@ -39,16 +53,12 @@ namespace SodaMachine
                     Menu();
                 }
 
-                else if (sodaMachine.MakeChange(canPriceMinusInsertedCoins, customer.wallet.coins, insertedCoins))
+                else if(sodaMachine.MakeChange(canPriceMinusInsertedCoins, customer.wallet.coins, insertedCoins))
                 {
                     sodaMachine.DispenseCan(canPriceMinusInsertedCoins, customer.backpack.cans, insertedCoins);
                     Menu();
                 }
-                else
-                {
-                    
 
-                }
             }
             
 

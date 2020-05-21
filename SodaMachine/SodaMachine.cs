@@ -89,12 +89,15 @@ namespace SodaMachine
         {
            // if (result == 0)
            // {
-                userBackpack.Add(chosenCan);
                 if (inventory.Remove(chosenCan) == false)
                 {
                     UserInterface.InventoryShortage();
                 }
+            else
+            {
+                userBackpack.Add(chosenCan);
 
+            }
             //}
             //else
             //{
