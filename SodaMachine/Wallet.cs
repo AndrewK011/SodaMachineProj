@@ -15,6 +15,7 @@ namespace SodaMachine
         {
             coins = new List<Coin>();
             card = new Card();
+            card.AvailableFunds = 20.0;
         }
 
         public void StartingWallet(int quarters, int dimes, int nickels, int pennies)

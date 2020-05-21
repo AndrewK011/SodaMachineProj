@@ -100,7 +100,13 @@ namespace SodaMachine
         public bool MakeChange(double coinsMinusCost, List<Coin> userWallet, List<Coin> insertedCoins)
         {
             List<Coin> coinsToGiveBack = new List<Coin>();
-            List<Coin> copyOfRegister = register;
+            List<Coin> copyOfRegister = new List<Coin>();
+
+            foreach(Coin coin in register)
+            {
+                copyOfRegister.Add(coin);
+            }
+            
 
             foreach(Coin coin in insertedCoins)
             {
@@ -141,19 +147,18 @@ namespace SodaMachine
                     
                 }
                 return true;
-
             }
 
             else
             {
+                foreach (Coin coin in register)
+                {
+                    userWallet.Add(coin);
+
+                }
                 register = copyOfRegister;
                 return false;
             }
-
-
-            
-
-
         }
 
         public double MakeQuarterChange(List<Coin> coinsToGiveBack, double coinsMinusCost)
@@ -226,7 +231,6 @@ namespace SodaMachine
                     i--;
                 }
 
-
             }
             return changeRemaining;
         }
@@ -251,9 +255,10 @@ namespace SodaMachine
                     i--;
                 }
 
-                else if(i == register.Count - 1)
+                else if(i < register.Count)
                 {
                     enoughChangeInRegister = false;
+                    break;
                 }
 
                 else

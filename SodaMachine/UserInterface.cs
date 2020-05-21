@@ -82,12 +82,65 @@ namespace SodaMachine
 
         }
 
+        public static void DisplaySodaInBackpack(List<Can> cans)
+        {
+            int rootBeerCounter = 0;
+            int colaCounter = 0;
+            int orangeSodaCounter = 0;
+
+
+            for (int i = 0; i < cans.Count; i++)
+            {
+                switch (cans[i].name)
+                {
+                    case "root beer":
+                        rootBeerCounter++;
+                        break;
+                    case "cola":
+                        colaCounter++;
+                        break;
+                    case "orange soda":
+                        orangeSodaCounter++;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+
+            Console.WriteLine($"You have:\n{rootBeerCounter} root beers\n{colaCounter} colas\n{orangeSodaCounter} orange sodas");
+
+        }
+
         public static int GetIntInput()
         {
             int userInput;
             if (int.TryParse(Console.ReadLine(), out userInput))
             {
                 return userInput;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input.");
+                GetIntInput();
+            }
+                return 0;
+        }
+        public static int GetIntInput(int limit)
+        {
+            int userInput;
+            if (int.TryParse(Console.ReadLine(), out userInput))
+            {
+                if (userInput < limit)
+                {
+                    return userInput;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input.");
+                    GetIntInput(limit);
+                    
+                }
             }
             else
             {
@@ -132,7 +185,7 @@ namespace SodaMachine
 
         public static void InventoryShortage()
         {
-            Console.WriteLine("We're sorry, we are currently out of that selection.");
+            Console.WriteLine("We're sorry, we are currently out of product.");
         }
 
         public static Can SelectDrink(List<Can> cans)
@@ -159,7 +212,7 @@ namespace SodaMachine
                 Console.WriteLine($"{i}) {selectionOfCans[i].name} ${selectionOfCans[i].Cost}");
             }
 
-            return selectionOfCans[GetIntInput()];
+            return selectionOfCans[GetIntInput(selectionOfCans.Count)];
         }
     }
 }

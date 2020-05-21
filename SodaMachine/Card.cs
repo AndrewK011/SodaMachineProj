@@ -15,6 +15,10 @@ namespace SodaMachine
             {
                 return availableFunds;
             }
+            set
+            {
+                availableFunds = value;
+            }
         }
     }
 }
