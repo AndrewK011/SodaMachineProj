@@ -14,11 +14,13 @@ namespace SodaMachine
 
         public Simulation()
         {
+            
             sodaMachine = new SodaMachine();
             customer = new Customer();
             sodaMachine.StartingInventory(10,10,10);
-            //sodaMachine.StartingRegister(20,10,20,50);
+            sodaMachine.StartingRegister(20,10,20,50);         
             customer.wallet.StartingWallet(12,15,8,10);
+            
             Menu();
             UserInterface.DisplaySodaInBackpack(customer.backpack.cans);
         }
@@ -40,15 +42,15 @@ namespace SodaMachine
                     insertedCoins = customer.EnterPayment(customer.wallet.coins);
 
 
-                    double canPriceMinusInsertedCoins = sodaMachine.DrinkSelection(insertedCoins);
-                    if (canPriceMinusInsertedCoins < 0)
+                    double canPriceMinusInsertedCash = sodaMachine.DrinkSelection(insertedCoins);
+                    if (canPriceMinusInsertedCash < 0)
                     {
                         UserInterface.NotEnoughMoney();
                         CustomerTakesChange(insertedCoins);
                         Menu();
                     }
 
-                    else if (sodaMachine.MakeChange(canPriceMinusInsertedCoins, customer.wallet.coins, insertedCoins))
+                    else if (sodaMachine.MakeChange(canPriceMinusInsertedCash, customer.wallet.coins, insertedCoins))
                     {
                         sodaMachine.DispenseCan(customer.backpack.cans);
                         Menu();
@@ -59,8 +61,20 @@ namespace SodaMachine
 
                 else if (userInput == 2)
                 {
-                    customer.EnterPayment(customer.wallet.card);
+                    
+                    double canPriceMinusInsertedCash = sodaMachine.DrinkSelection(customer.wallet.card);
+                    if (canPriceMinusInsertedCash < 0)
+                    {
+                        UserInterface.NotEnoughMoney();                      
+                        Menu();
+                    }
 
+                    else
+                    {
+                        customer.wallet.card.AvailableFunds = canPriceMinusInsertedCash; 
+                        sodaMachine.DispenseCan(customer.backpack.cans);
+                        Menu();
+                    }
                 }
 
             }

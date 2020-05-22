@@ -13,6 +13,9 @@ namespace SodaMachine
         public List<Can> inventory;
         public Can chosenCan;
         public bool enoughChangeInRegister = true;
+        bool emptyQuarters = false;
+        bool emptyDimes = false;
+        bool emptyNickels = false;       
 
         public SodaMachine()
         {
@@ -70,6 +73,18 @@ namespace SodaMachine
             return CanPriceMinusCoinsInserted(chosenCan, insertedCoins);
         }
 
+        public double DrinkSelection(Card card)
+        {
+            chosenCan = UserInterface.SelectDrink(inventory);
+            return CanPriceMinusCardBalance(chosenCan, card);
+        }
+
+        public double CanPriceMinusCardBalance(Can chosenCan, Card card)
+        {
+            double result = card.AvailableFunds - chosenCan.Cost;
+            return Math.Round(result, 2);
+        }
+
         public double CanPriceMinusCoinsInserted(Can chosenCan, List<Coin> insertedCoins)
         {
             double coinTotal = 0.0;
@@ -93,7 +108,6 @@ namespace SodaMachine
             else
             {
                 userBackpack.Add(chosenCan);
-
             }
         }
 
@@ -101,6 +115,7 @@ namespace SodaMachine
         {
             List<Coin> coinsToGiveBack = new List<Coin>();
             List<Coin> copyOfRegister = new List<Coin>();
+            
 
             foreach(Coin coin in register)
             {
@@ -113,19 +128,23 @@ namespace SodaMachine
                 register.Add(coin);
             }
 
+            emptyQuarters = false;
+            emptyDimes = false;
+            emptyNickels = false;
+
             while (coinsMinusCost != 0 && enoughChangeInRegister == true)
             {
-                if (coinsMinusCost >= 0.25)
+                if (coinsMinusCost >= 0.25 && emptyQuarters == false)
                 {
                     coinsMinusCost = MakeQuarterChange(coinsToGiveBack, coinsMinusCost);
                 }
 
-                else if (coinsMinusCost >= 0.1)
+                else if (coinsMinusCost >= 0.1 && emptyDimes == false)
                 {
                     coinsMinusCost = MakeDimeChange(coinsToGiveBack, coinsMinusCost);
                 }
 
-                else if (coinsMinusCost >= 0.05)
+                else if (coinsMinusCost >= 0.05 && emptyNickels == false)
                 {
                     coinsMinusCost = MakeNickelChange(coinsToGiveBack, coinsMinusCost);
                 }
@@ -174,7 +193,7 @@ namespace SodaMachine
                     break;
                 }
 
-                if (register[i].name == "quarter")
+                else if (register[i].name == "quarter")
                 {
                     coinsToGiveBack.Add(register[i]);
                     register.RemoveAt(i);
@@ -183,13 +202,25 @@ namespace SodaMachine
                 }
 
             }
+
+            if (divisibleByQuarter > counter)
+            {
+                emptyQuarters = true;
+            }
+
+            changeRemaining += (divisibleByQuarter - counter) * 0.25;
+                
+          
             return changeRemaining;
         }
 
         public double MakeDimeChange(List<Coin> coinsToGiveBack, double coinsMinusCost)
         {
+            
             int divisibleByDime = (int)(coinsMinusCost / 0.1);
-            double changeRemaining = coinsMinusCost % 0.1;
+            
+
+            double changeRemaining = (100*coinsMinusCost) % (100*0.1)/100;
             int counter = 0;
 
             for (int i = 0; i < register.Count; i++)
@@ -198,7 +229,7 @@ namespace SodaMachine
                 {
                     break;
                 }
-                if (register[i].name == "dime")
+                else if (register[i].name == "dime")
                 {
                     coinsToGiveBack.Add(register[i]);
                     register.RemoveAt(i);
@@ -208,13 +239,23 @@ namespace SodaMachine
 
 
             }
+
+            if (divisibleByDime > counter)
+            {
+                emptyDimes = true;
+            }
+                changeRemaining += (divisibleByDime - counter) * 0.1;
+               
+            
             return changeRemaining;
         }
 
         public double MakeNickelChange(List<Coin> coinsToGiveBack, double coinsMinusCost)
         {
             int divisibleByNickel = (int)(coinsMinusCost / 0.05);
-            double changeRemaining = coinsMinusCost % 0.05;
+            
+            
+            double changeRemaining = (100*coinsMinusCost) % (100*0.05)/100;
             int counter = 0;
 
             for (int i = 0; i < register.Count; i++)
@@ -223,7 +264,7 @@ namespace SodaMachine
                 {
                     break;
                 }
-                if (register[i].name == "nickel")
+                else if (register[i].name == "nickel")
                 {
                     coinsToGiveBack.Add(register[i]);
                     register.RemoveAt(i);
@@ -232,13 +273,21 @@ namespace SodaMachine
                 }
 
             }
+            if (divisibleByNickel > counter)
+            {
+                emptyNickels = true;
+            }
+                changeRemaining += (divisibleByNickel - counter) * 0.05;
+               
+            
             return changeRemaining;
         }
 
         public double MakePennyChange(List<Coin> coinsToGiveBack, double coinsMinusCost)
         {
             int divisibleByPenny = (int)(coinsMinusCost / 0.01);
-            double changeRemaining = coinsMinusCost % 0.01;
+            
+            double changeRemaining = (100*coinsMinusCost) % (100*0.01)/100;
             int counter = 0;
 
             for (int i = 0; i < register.Count; i++)
@@ -247,7 +296,7 @@ namespace SodaMachine
                 {
                     break;
                 }
-                if (register[i].name == "penny")
+                else if (register[i].name == "penny")
                 {
                     coinsToGiveBack.Add(register[i]);
                     register.RemoveAt(i);
@@ -255,17 +304,11 @@ namespace SodaMachine
                     i--;
                 }
 
-                else if(i < register.Count)
+                else if(i == register.Count - 1)
                 {
                     enoughChangeInRegister = false;
                     break;
                 }
-
-                else
-                {
-                    break;
-                }
-
             }
             return changeRemaining;
         }

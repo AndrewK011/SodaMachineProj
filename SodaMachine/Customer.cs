@@ -19,10 +19,7 @@ namespace SodaMachine
 
         
 
-        public void EnterPayment(Card card)
-        {
 
-        }
 
         public List<Coin> EnterPayment(List<Coin> coins)
         {
@@ -85,6 +82,7 @@ namespace SodaMachine
                             coins.RemoveAt(i);
                             counter++;
                             i--;
+                            
                         }
 
                     }
