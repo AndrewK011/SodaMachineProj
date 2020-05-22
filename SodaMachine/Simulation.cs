@@ -80,9 +80,6 @@ namespace SodaMachine
             }
         }         
         
-
-        
-
         public void CustomerTakesChange(List<Coin> insertedChange)
         {
         
