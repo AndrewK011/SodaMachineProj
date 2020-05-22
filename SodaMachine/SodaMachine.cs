@@ -168,6 +168,7 @@ namespace SodaMachine
 
             else
             {
+                UserInterface.NotEnoughMoneyRegister();
                 foreach (Coin coin in register)
                 {
                     userWallet.Add(coin);

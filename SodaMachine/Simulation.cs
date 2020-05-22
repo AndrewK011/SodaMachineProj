@@ -18,7 +18,7 @@ namespace SodaMachine
             sodaMachine = new SodaMachine();
             customer = new Customer();
             sodaMachine.StartingInventory(10,10,10);
-            sodaMachine.StartingRegister(20,10,20,50);         
+            //sodaMachine.StartingRegister(20,10,20,50);         
             customer.wallet.StartingWallet(12,15,8,10);
             
             Menu();

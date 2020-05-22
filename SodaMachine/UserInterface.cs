@@ -38,6 +38,11 @@ namespace SodaMachine
             Console.WriteLine("Not enough money entered.\n\n\n\n");
         }
 
+        public static void NotEnoughMoneyRegister()
+        {
+            Console.WriteLine("\n\nNot enough change in register.\n\n");
+        }
+
         public static void AskForNextCoin(string currentCoin)
         {
             Console.WriteLine($"How many {currentCoin} would you like to insert?");
