@@ -41,7 +41,6 @@ namespace SodaMachine
                 {
                     insertedCoins = customer.EnterPayment(customer.wallet.coins);
 
-
                     double canPriceMinusInsertedCash = sodaMachine.DrinkSelection(insertedCoins);
                     if (canPriceMinusInsertedCash < 0)
                     {

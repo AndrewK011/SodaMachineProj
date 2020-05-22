@@ -96,8 +96,6 @@ namespace SodaMachine
             return Math.Round(result,2);
         }
 
-
-
         public void DispenseCan(List<Can> userBackpack)
         {
 
@@ -216,11 +214,8 @@ namespace SodaMachine
 
         public double MakeDimeChange(List<Coin> coinsToGiveBack, double coinsMinusCost)
         {
-            
             int divisibleByDime = (int)(coinsMinusCost / 0.1);
-            
-
-            double changeRemaining = (100*coinsMinusCost) % (100*0.1)/100;
+            double changeRemaining = (100 * coinsMinusCost) % (100 * 0.1) / 100;
             int counter = 0;
 
             for (int i = 0; i < register.Count; i++)
@@ -236,26 +231,19 @@ namespace SodaMachine
                     counter++;
                     i--;
                 }
-
-
             }
 
             if (divisibleByDime > counter)
             {
                 emptyDimes = true;
             }
-                changeRemaining += (divisibleByDime - counter) * 0.1;
-               
-            
+            changeRemaining += (divisibleByDime - counter) * 0.1;
             return changeRemaining;
         }
-
         public double MakeNickelChange(List<Coin> coinsToGiveBack, double coinsMinusCost)
         {
             int divisibleByNickel = (int)(coinsMinusCost / 0.05);
-            
-            
-            double changeRemaining = (100*coinsMinusCost) % (100*0.05)/100;
+            double changeRemaining = (100 * coinsMinusCost) % (100 * 0.05) / 100;
             int counter = 0;
 
             for (int i = 0; i < register.Count; i++)
@@ -277,12 +265,10 @@ namespace SodaMachine
             {
                 emptyNickels = true;
             }
-                changeRemaining += (divisibleByNickel - counter) * 0.05;
-               
-            
+            changeRemaining += (divisibleByNickel - counter) * 0.05;
+
             return changeRemaining;
         }
-
         public double MakePennyChange(List<Coin> coinsToGiveBack, double coinsMinusCost)
         {
             int divisibleByPenny = (int)(coinsMinusCost / 0.01);
@@ -312,7 +298,5 @@ namespace SodaMachine
             }
             return changeRemaining;
         }
-
-
     }
 }

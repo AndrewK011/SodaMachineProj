@@ -17,10 +17,6 @@ namespace SodaMachine
             backpack = new Backpack();
         }
 
-        
-
-
-
         public List<Coin> EnterPayment(List<Coin> coins)
         {
             List<Coin> coinPayment = ChooseCoins(coins);
@@ -46,7 +42,6 @@ namespace SodaMachine
             int counter = 0;
             switch (currentCoin)
             {
-
                 case "quarters":
                     coinsEntered = UserInterface.GetIntInput();
                     for (int i = 0; i < coins.Count; i++)
@@ -63,7 +58,6 @@ namespace SodaMachine
                             counter++;
                             i--;
                         }
-
                     }
                     UserInterface.DisplayCoinInserted(counter, currentCoin);
                     break;
@@ -82,9 +76,7 @@ namespace SodaMachine
                             coins.RemoveAt(i);
                             counter++;
                             i--;
-                            
                         }
-
                     }
                     UserInterface.DisplayCoinInserted(counter, currentCoin);
                     break;
@@ -124,15 +116,12 @@ namespace SodaMachine
                             counter++;
                             i--;
                         }
-
                     }
                     UserInterface.DisplayCoinInserted(counter, currentCoin);
                     break;
                 default:
                     break;
             }
-
         }
-
     }
 }
